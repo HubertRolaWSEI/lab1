@@ -12,26 +12,20 @@ public class HomeController : Controller
     {
         _logger = logger;
     }
-    
 
-    public IActionResult About()
-    {
-        return View();
-    }
-
-    public IActionResult Calculator(string op, double? a, double? b)
+    public IActionResult Calculator(Operator? op, double? a, double? b)
     {
         if (a is null || b is null)
         {
-            ViewBag.ErrorMessage = "Niepoprawny format w parametrze a lub b";
+            ViewBag.ErrorMessage = "Niepoprawny format liczby w parametrze a lub b";
             return View("CustomError");
         }
         ViewBag.a = a;
         ViewBag.b = b;
 
-        if (op != "add" || op != "sub" || op != "nul" || op != "div")
+        if (op is null)
         {
-            ViewBag.ErrorMessage = "Niepoprawny operator!";
+            ViewBag.ErrorMessage = "Niepoprawny operator";
             return View("CustomError");
         }
         
@@ -45,15 +39,19 @@ public class HomeController : Controller
                 ViewBag.result = a - b;
                 ViewBag.op = "-";
                 break;
-            case Operator.Div:
+            case Operator.Mul:
                 ViewBag.result = a * b;
                 ViewBag.op = "*";
                 break;
-            case Operator.Mul:
+            case Operator.Div:
                 ViewBag.result = a / b;
-                ViewBag.op = "/";
+                ViewBag.op = ":";
                 break;
         }
+        return View();
+    }
+    public IActionResult About()
+    {
         return View();
     }
 
